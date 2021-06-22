@@ -30,7 +30,7 @@ public class UserRestController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user){ //body Un simple getter usado para exponer un contenido del cuerpo
+    public User create(@RequestBody User user){
 
         return userService.save(user);
     }

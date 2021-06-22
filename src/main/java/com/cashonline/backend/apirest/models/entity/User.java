@@ -1,8 +1,6 @@
 package com.cashonline.backend.apirest.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.List;
 public class User  implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // para que la llave se genere de manera incremental
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int id;
 

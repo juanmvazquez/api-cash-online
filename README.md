@@ -7,7 +7,7 @@ Para lograr su funcionamiento, los pasos ha realizar:
 
 Para poder ejecutar la API se debe crear previamente unas Base de Datos MYSQL con los siguientes comandos.
 ```
-  CREATE DATABASE db_backend_cash
+  CREATE DATABASE db_backend_cash;
   
 ```
 
@@ -105,7 +105,7 @@ public class UserRestController {
   ...
 }
 ```
-Dentro de estos creo los metodos `GET`, `POST`, `PUT`, `DELET` con sus respectivos mapeos.
+Dentro de estos creo los metodos `GET`, `POST`, `PUT`, `DELETE` con sus respectivos mapeos.
 
 Se cuenta con un `LoanDto` en la carpeta `controller.dto` que se utilizo para la creacion de un `Loan` a traves de un `user_id`.
 
