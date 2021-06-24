@@ -20,9 +20,10 @@ public class User  implements Serializable {
     @Column(name = "last_name")
     private String lastName;
     private String email;
-    @OneToMany(mappedBy = "user", targetEntity = Loan.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", targetEntity = Loan.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "user")
     private List<Loan> loans = new ArrayList<>();
+
 
     public String getFirstName() {
         return firstName;
