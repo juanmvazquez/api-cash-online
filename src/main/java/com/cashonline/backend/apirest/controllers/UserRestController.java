@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -34,37 +38,48 @@ public class UserRestController {
         User user = userService.findById(id);
 
         if(user == null){
-            throw new NotFoundUserException("ERROR El id no existe en la DB.");
+            throw new NotFoundUserException("ERROR El id no se encuentra en la DB");
         }
 
         List<Loan> loans = user.getLoans();
         List<ItemDto> listItem = new ArrayList<>();
 
-        for (Loan loan: loans) {
+        loans.forEach(loan -> {
             ItemDto itemDto = new ItemDto(loan.getId(), loan.getTotal().intValue(), loan.getUser().getId());
             listItem.add(itemDto);
-        }
-        UserDto userDto = new UserDto(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), listItem);
 
-        return userDto;
+        });
+
+        return new UserDto(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), listItem);
+
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> create(@RequestBody User user) {
+    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result) {
 
-        User userNew = null;
+        User userNew;
         Map<String, Object> response = new HashMap<>();
+
+        if(result.hasErrors()){
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(e -> "El campo '" + e.getField() + "' " +e.getDefaultMessage())
+                    .collect(Collectors.toList());
+
+            response.put("errors", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
         try{
             userNew = userService.save(user);
         } catch(DataAccessException e){
-            response.put("ERROR", "No se pudo crear un nuevo usuario.");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("ERROR", "El email ya se encuentra en uso.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        response.put("CREADO", "¡El cliente ha sido cargado correctamente!");
+        response.put("CREADO", "El cliente ha sido creado con exito");
         response.put("user", userNew);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 

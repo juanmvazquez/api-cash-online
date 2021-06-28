@@ -12,10 +12,10 @@ public class Loan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "loans")
     @JoinColumn(name="user_id",nullable = false)
-
     private User user ;
 
     public Loan(User user, BigDecimal total) {

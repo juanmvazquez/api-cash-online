@@ -1,22 +1,21 @@
 package com.cashonline.backend.apirest.models.services;
 
+import com.cashonline.backend.apirest.controllers.dto.LoanResponseDto;
 import com.cashonline.backend.apirest.models.entity.Loan;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 
 import java.util.List;
 
 public interface ILoanService {
 
-    public Page<Loan> findAll(Pageable pageable);
+    LoanResponseDto findAll(Integer size, Integer page);
+    LoanResponseDto findLoanByUserId(Integer id, Integer size, Integer page);
 
-    public Page<Loan> findLoanByUserId(Integer id, Pageable pageable);
+    Loan findById(int id);
 
-    public Loan findById(int id);
+    Loan save (Loan loan);
 
-    public Loan save (Loan loan);
-
-    public void delete(int id);
+    void delete(int id);
 
 }
