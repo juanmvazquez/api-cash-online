@@ -3,10 +3,6 @@ package com.cashonline.backend.apirest.models.services;
 import com.cashonline.backend.apirest.controllers.dto.LoanResponseDto;
 import com.cashonline.backend.apirest.models.entity.Loan;
 
-
-
-import java.util.List;
-
 public interface ILoanService {
 
     LoanResponseDto findAll(Integer size, Integer page);

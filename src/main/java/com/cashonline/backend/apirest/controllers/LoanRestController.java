@@ -1,23 +1,14 @@
 package com.cashonline.backend.apirest.controllers;
 
-import com.cashonline.backend.apirest.controllers.dto.ItemDto;
 import com.cashonline.backend.apirest.controllers.dto.LoanDto;
 import com.cashonline.backend.apirest.controllers.dto.LoanResponseDto;
-import com.cashonline.backend.apirest.controllers.dto.PagingDto;
 import com.cashonline.backend.apirest.models.entity.Loan;
 import com.cashonline.backend.apirest.models.entity.User;
 import com.cashonline.backend.apirest.models.services.ILoanService;
 import com.cashonline.backend.apirest.models.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/v1")
