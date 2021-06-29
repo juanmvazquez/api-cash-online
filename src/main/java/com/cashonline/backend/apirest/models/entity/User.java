@@ -2,6 +2,9 @@ package com.cashonline.backend.apirest.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +18,30 @@ public class User  implements Serializable {
     @Column(name = "user_id")
     private int id;
 
-    @Column(name = "first_name")
+    @NotEmpty(message = "no debe estar vacio.")
+    @Size(min=3, max=25, message = "debe tener entre 3 y 15 caracteres.")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+
+    @NotEmpty(message = "no debe estar vacio.")
+    @Size(min=3, max=25, message = "debe tener entre 3 y 20 caracteres.")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @NotEmpty(message = "no debe estar vacio.")
+    @Email(message = "es un formato invalido de email.")
+    @Column(nullable = false, unique = true)
     private String email;
+
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public User() {
+    }
+
     @OneToMany(mappedBy = "user", targetEntity = Loan.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "user")
     private List<Loan> loans = new ArrayList<>();

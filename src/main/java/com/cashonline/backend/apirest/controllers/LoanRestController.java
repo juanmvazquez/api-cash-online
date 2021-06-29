@@ -35,35 +35,12 @@ public class LoanRestController {
                                  @RequestParam(name = "size",defaultValue = "50") Integer size,
                                  @RequestParam(name = "user_id", required = false, defaultValue = "-1") Integer user_id) {
 
-        page = page -1;
-        if (page < 0) {
-            page = 0;
-        }
-
-        Pageable pageRequest = PageRequest.of(page,size);
-        Page<Loan> loans = null;
 
         if (user_id > 0) {
-            loans = loanService.findLoanByUserId(user_id,pageRequest);
+            return loanService.findLoanByUserId(user_id,size, page);
+        } else {
+            return loanService.findAll(size, page);
         }
-
-        else {
-            loans = loanService.findAll(pageRequest);
-        }
-
-        List<Loan> loansContent = loans.getContent();
-
-        PagingDto pagingDto = new PagingDto(page + 1, size, loansContent.size());
-
-        List<ItemDto> listItem = new ArrayList<>();
-
-        for (Loan loan: loansContent) {
-            ItemDto itemDto = new ItemDto(loan.getId(), loan.getTotal().intValue(), loan.getUser().getId());
-            listItem.add(itemDto);
-        }
-
-        LoanResponseDto loanResponseDto = new LoanResponseDto(listItem, pagingDto);
-        return loanResponseDto;
     }
 
     @GetMapping("/loans/{id}")

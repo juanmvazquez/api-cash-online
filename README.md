@@ -55,12 +55,15 @@ Existen dos entidades que se mapean con el modelo de la BD, dentro del package `
   
 ```
 
+
 # Paso 4
 
 Para acceder a la base de datos se utilizan interfaces DAO que extienden a `JpaRepository`, las cuales son `IUserDao`, `ILoanDao`.
 
 # Paso 5
-Dentro del package `Services` almaceno las interfaces `IUserService`, `ILoanService` donde a cada una contiene los metodos del CRUD (Create, Read, Update, Delete).
+Dentro del package `Services` almaceno las interfaces `IUserService`, `ILoanService` donde cada una contiene los metodos del CRUD (Create, Read, Update, Delete).
+
+En el mismo package se encuentra  `IPaginationService` que contiene el metodo de paginacion.
 
 ```
 public interface IUserService {
@@ -92,8 +95,14 @@ public interface ILoanService {
 
 }
 ```
+
+```
+public interface IPaginationService {
+    Pageable findBySizeAndPage(Integer size, Integer page);
+}
+```
 # Paso 6
-En el mismo package se encuentran  las clases `UserService`, `LoanService` que implementan las interfaces anteriormente creadas.
+En el mismo package se encuentran  las clases `UserService`, `LoanService` & `PaginationService` que implementan las interfaces anteriormente creadas.
 ```
 @Service
 public class UserService implements IUserService{
@@ -101,6 +110,8 @@ public class UserService implements IUserService{
 }
 ```
 IDEM `LoanService`.
+IDEM `PaginationService`.
+      
 
 # Paso 7
 Dentro del package `Controller` se encuentran los controllers `UserRestController`, `LoanRestController` 
@@ -123,7 +134,9 @@ public class UserRestController {
 Quienes implementan los metodos HTTP : `GET`, `POST`, `PUT`, `DELETE` 
 # Paso 8
 
-En el package `controller.dto` se encuentran con los siguientes DTOs `UserDto`,`LoanDto`,`ItemDto`,`LoanResponseDto`,`PagingDto`.
+En el package `controller.dto` se encuentran los siguientes DTOs `UserDto`,`LoanDto`,`ItemDto`,`LoanResponseDto`,`PagingDto`.
+
+`UserDto` se utilizo para la visualizacion del `user_id`
 
 `LoanDto` se utilizo para la creacion de un `Loan` a traves de un `user_id`.
 
@@ -153,6 +166,8 @@ En el package `controller.dto` se encuentran con los siguientes DTOs `UserDto`,`
 }
 ```
 
+Utilice validaciones al momento de crear un usuario para mostrar su implementacion (`firstName`, `lastName`, `email`).
+
 # Paso 9
 
 En el package `controllers.exceptions` se encuentran `ExceptionResponse`, `NotFoundUserException`, `NotFoundUserResponseEntityExceptionHandler`
@@ -171,7 +186,7 @@ public class ExceptionResponse {
 `NotFoundUserResponseEntityExceptionHandler` es el encargado de handlear la excepcion generada por la API.
 
 # Paso 10
-Dentro de la carpeta `test` se encuentra `UserRestControllerTest` donde se testearon las funcionalidades `createUser`, `deleteUser`.
+Dentro de la carpeta `test` se encuentra `UserRestControllerTest` donde se testearon de forma integral las funcionalidades `createUser`, `deleteUser`.
 
 FE DE ERRATAS : Quedo pendiende el testeo del `LoanRestController` y un alto coverage en el `UserRestController` debido al tiempo que me apremiaba.
 ```
@@ -187,6 +202,20 @@ void deleteUser() {
 }
 ```
 
+Se testearon de forma unitaria `createUserDao`, `deleteUserDao`.
+```
+@Test
+public void createUserDao() {
+    ...
+}
+```
+
+```
+@Test
+public void deleteUserDao() {
+    ...
+}
+```
 # Paso 11 
 
-Link a la colleccion de [Postman](https://www.getpostman.com/collections/963064d093c4e9025824)
+Link a la colleccion de [Postman](https://www.getpostman.com/collections/963064d093c4e9025824).
